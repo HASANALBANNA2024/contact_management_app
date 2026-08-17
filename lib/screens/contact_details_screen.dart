@@ -14,10 +14,21 @@ class ContactDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Contact Details'),
+        centerTitle: true,
+        title: const Text(
+          'Contact Details',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 18,
+          ),
+          maxLines: 1,
+        ),
         actions: [
+          const SizedBox(width: 12,),
           IconButton(
-            icon: const Icon(Icons.edit_outlined),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.edit, color: Colors.white),
             onPressed: () {
               Navigator.push(
                 context,
@@ -27,99 +38,121 @@ class ContactDetailsScreen extends StatelessWidget {
               );
             },
           ),
+          const SizedBox(width: 4), // দুই বাটনের মাঝে হালকা সুন্দর গ্যাপ
+          // দ্বিতীয় আইকন (ডিলিট)
           IconButton(
-            icon: const Icon(Icons.delete_outline),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.delete, color: Colors.white),
             onPressed: () {
               showDialog(
                 context: context,
                 builder: (_) => DeleteDialog(
                   contactName: contact.name,
                   onDeleteConfirmed: () {
-                    context.read<ContactBloc>().add(
-                      DeleteContactEvent(contact.id!),
-                    );
+                    context.read<ContactBloc>().add(DeleteContactEvent(contact.id!));
                     Navigator.pop(context);
                   },
                 ),
               );
             },
           ),
+          const SizedBox(width: 12), // ডান কোনায় সুন্দরভাবে ধরে রাখার শেষ মার্জিন
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
         child: Column(
           children: [
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             Center(
               child: CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.deepPurple.shade100,
+                radius: 44,
+                backgroundColor: Colors.deepPurple,
                 child: Text(
                   contact.name.isNotEmpty ? contact.name[0].toUpperCase() : '',
                   style: const TextStyle(
-                    fontSize: 28,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Colors.deepPurple,
+                    color: Colors.white,
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            Text(
-              contact.name,
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Text(
+                contact.name,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             const SizedBox(height: 32),
+
             _infoCard(context, Icons.phone, contact.phone, 'Mobile'),
             const SizedBox(height: 16),
-            _infoCard(context, Icons.mail_outline, contact.email, 'Email'),
+            _infoCard(context, Icons.mail, contact.email, 'Email'),
             const SizedBox(height: 16),
-            _infoCard(
-              context,
-              Icons.location_on_outlined,
-              contact.address,
-              'Address',
-            ),
+            _infoCard(context, Icons.location_on, contact.address, 'Address'),
           ],
         ),
       ),
     );
   }
 
-  Widget _infoCard(
-    BuildContext context,
-    IconData icon,
-    String value,
-    String label,
-  ) {
+  Widget _infoCard(BuildContext context, IconData icon, String value, String label) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.withOpacity(0.15), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(icon, color: Colors.deepPurple, size: 24),
+          Icon(icon, color: Colors.grey.shade600, size: 24),
           const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black87,
+                  ),
+                  softWrap: true,
                 ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                label,
-                style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
-              ),
-            ],
+                const SizedBox(height: 2),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: Colors.grey.shade500,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

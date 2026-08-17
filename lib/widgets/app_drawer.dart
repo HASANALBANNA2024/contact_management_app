@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/about_app_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/settings_screen.dart';
 class AppDrawer extends StatelessWidget {
@@ -85,7 +86,10 @@ class AppDrawer extends StatelessWidget {
             icon: Icons.info_outline,
             title: 'About App',
             isSelected: false,
-            onTap: () {},
+            onTap: () {Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const AboutAppScreen()),
+            );},
           ),
           _drawerItem(
             icon: Icons.settings,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../bloc/contact_bloc.dart';
 import '../bloc/contact_event.dart';
 import '../state/contact_state.dart';
@@ -29,55 +28,57 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: _isSearching
           ? AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  setState(() {
-                    _isSearching = false;
-                    _searchController.clear();
-                  });
-                  context.read<ContactBloc>().add(SearchContactsEvent(''));
-                },
-              ),
-              title: TextField(
-                controller: _searchController,
-                autofocus: true,
-                style: const TextStyle(color: Colors.white),
-                cursorColor: Colors.white,
-                decoration: const InputDecoration(
-                  hintText: 'Search contacts...',
-                  hintStyle: TextStyle(color: Colors.white70),
-                  border: InputBorder.none,
-                ),
-                onChanged: (query) {
-                  context.read<ContactBloc>().add(SearchContactsEvent(query));
-                },
-              ),
-              actions: [
-                if (_searchController.text.isNotEmpty)
-                  IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      _searchController.clear();
-                      context.read<ContactBloc>().add(SearchContactsEvent(''));
-                    },
-                  ),
-              ],
-            )
-          : AppBar(
-              title: Text(isFav ? 'Favorites' : 'My Contacts'),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = true;
-                    });
-                  },
-                ),
-                IconButton(icon: const Icon(Icons.more_vert), onPressed: () {}),
-              ],
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            setState(() {
+              _isSearching = false;
+              _searchController.clear();
+            });
+            context.read<ContactBloc>().add(SearchContactsEvent(''));
+          },
+        ),
+        title: TextField(
+          controller: _searchController,
+          autofocus: true,
+          style: const TextStyle(color: Colors.white),
+          cursorColor: Colors.white,
+          autocorrect: false,
+          enableSuggestions: false,
+          decoration: const InputDecoration(
+            hintText: 'Search contacts...',
+            hintStyle: TextStyle(color: Colors.white70),
+            border: InputBorder.none,
+          ),
+          onChanged: (query) {
+            context.read<ContactBloc>().add(SearchContactsEvent(query));
+          },
+        ),
+        actions: [
+          if (_searchController.text.isNotEmpty)
+            IconButton(
+              icon: const Icon(Icons.clear),
+              onPressed: () {
+                _searchController.clear();
+                context.read<ContactBloc>().add(SearchContactsEvent(''));
+              },
             ),
+        ],
+      )
+          : AppBar(
+        title: Text(isFav ? 'Favorites' : 'My Contacts'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              setState(() {
+                _isSearching = true;
+              });
+            },
+          ),
+          IconButton(icon: const Icon(Icons.more_vert), onPressed: () {}),
+        ],
+      ),
       drawer: AppDrawer(currentRoute: isFav ? 'favorites' : 'all'),
       body: BlocBuilder<ContactBloc, ContactState>(
         builder: (context, state) {
@@ -86,12 +87,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CircularProgressIndicator(color: Colors.deepPurple),
             );
           }
-
-
           final currentContacts = isFav
               ? state.contacts.where((c) => c.isFavorite).toList()
               : state.contacts;
-
           if (currentContacts.isEmpty) {
             return Center(
               child: Padding(
@@ -141,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }
 
-          ///list display
+          /// list display
           return ListView.builder(
             padding: const EdgeInsets.only(top: 12, bottom: 80),
             itemCount: currentContacts.length,

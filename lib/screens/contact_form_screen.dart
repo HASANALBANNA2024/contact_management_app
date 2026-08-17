@@ -33,6 +33,15 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
     );
   }
 
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    _addressController.dispose();
+    super.dispose();
+  }
+
   void _submit() {
     if (_formKey.currentState!.validate()) {
       final newContact = ContactModel(
@@ -105,7 +114,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
                       controller: _addressController,
                       hint: 'Address',
                       icon: Icons.location_on_outlined,
-                      maxLines: 2,
+                      maxLines: 1,
                     ),
                   ],
                 ),
@@ -152,6 +161,8 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
       controller: controller,
       keyboardType: isPhone ? TextInputType.phone : TextInputType.text,
       maxLines: maxLines,
+      // টেক্সটকে আইকনের সাপেক্ষে ভার্টিক্যালি সেন্টারে রাখার জন্য
+      textAlignVertical: TextAlignVertical.center,
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.grey.shade600),
         hintText: hint,
@@ -159,7 +170,14 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
         fillColor: Theme.of(context).brightness == Brightness.dark
             ? const Color(0xFF1E1E1E)
             : Colors.grey.shade50,
-        contentPadding: const EdgeInsets.symmetric(vertical: 14),
+
+        // এটি টেক্সট এবং আইকনের মধ্যকার ভার্টিক্যাল এলাইনমেন্টের গ্যাপ দূর করে একই লাইনে আনবে
+        isDense: true,
+
+        // আইকন নিজের জায়গায় রেখে টেক্সটকে নিখুঁত পজিশনে রাখার প্যাডিং
+        contentPadding: const EdgeInsets.fromLTRB(12, 16, 12, 16),
+
+        alignLabelWithHint: false,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.grey.shade300),
@@ -170,7 +188,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
         ),
       ),
       validator: (v) =>
-          v == null || v.trim().isEmpty ? 'Please enter $hint' : null,
+      v == null || v.trim().isEmpty ? 'Please enter $hint' : null,
     );
   }
 }
