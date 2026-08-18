@@ -5,7 +5,6 @@ class AboutAppScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // থিমের ওপর ভিত্তি করে টেক্সটের কালার সেট করার জন্য
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textColor = isDark ? Colors.white54 : Colors.black87;
     final subTextColor = isDark ? Colors.white60 : Colors.grey.shade600;
@@ -24,12 +23,11 @@ class AboutAppScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 20),
-            // 🎯 আইকনের পরিবর্তে আপনার দেওয়া ইমেজ অ্যাসেটটি এখানে যুক্ত করা হলো
             Center(
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.deepPurple.withOpacity(0.08),
+                  color: Colors.deepPurple.withValues(alpha: 0.08),
                   shape: BoxShape.circle,
                 ),
                 child: Image.asset(
@@ -37,9 +35,6 @@ class AboutAppScreen extends StatelessWidget {
                   width: 80,
                   height: 80,
                   fit: BoxFit.contain,
-                  // যদি ইমেজটি ট্রান্সপারেন্ট পিএনজি হয় এবং থিমের সাথে কালার ম্যাচ করাতে চান,
-                  // তবে নিচের লাইনটি আনকমেন্ট করতে পারেন:
-                  // color: Colors.deepPurple,
                 ),
               ),
             ),
@@ -55,7 +50,6 @@ class AboutAppScreen extends StatelessWidget {
             Text('v1.0.0', style: TextStyle(fontSize: 14, color: subTextColor)),
             const SizedBox(height: 32),
 
-            // অ্যাপের বিবরণ কার্ড
             _buildAboutCard(
               context,
               title: 'Description',
@@ -65,7 +59,6 @@ class AboutAppScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // ব্যবহৃত টেকনোলজি বা ফিচারের কার্ড
             _buildAboutCard(
               context,
               title: 'Features Included',
@@ -80,7 +73,6 @@ class AboutAppScreen extends StatelessWidget {
             ),
             const SizedBox(height: 40),
 
-            // কপিরাইট বা ক্রেডিট টেক্সট
             Text(
               'Developed as a Flutter Assignment',
               style: TextStyle(
@@ -107,10 +99,13 @@ class AboutAppScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.withOpacity(0.15), width: 1),
+        border: Border.all(
+          color: Colors.grey.withValues(alpha: 0.15),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.02),
+            color: Colors.black.withValues(alpha: 0.02),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),

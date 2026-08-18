@@ -8,7 +8,7 @@ import 'screens/splash_screen.dart';
 import 'state/contact_state.dart';
 import 'theme/app_theme.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
@@ -25,14 +25,13 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
             title: 'Contact Management App',
             debugShowCheckedModeBanner: false,
+
             themeMode: state.isDarkTheme ? ThemeMode.dark : ThemeMode.light,
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
 
-            // অ্যাপ ওপেন হলেই সবার আগে ৩ সেকেন্ডের জন্য স্প্ল্যাশ স্ক্রিন দেখাবে
             home: const SplashScreen(),
 
-            // ড্রয়ার থেকে সরাসরি 'Add Contact'-এ যাওয়ার জন্য রাউট সেটআপ
             routes: {'/add': (context) => const ContactFormScreen()},
           );
         },

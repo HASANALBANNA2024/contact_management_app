@@ -14,15 +14,26 @@ class ContactTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.withOpacity(0.15), width: 1),
+        border: Border.all(
+          color: isDarkMode
+              ? Colors.white.withValues(alpha: 0.05)
+              : Colors.grey.withValues(alpha: 0.15),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: isDarkMode
+                ? Colors.black.withValues(alpha: 0.2)
+                : Colors.black.withValues(alpha: 0.04),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -35,14 +46,13 @@ class ContactTile extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // 🔴 বাম পাশে গোল অবতার
               CircleAvatar(
                 radius: 22,
-                backgroundColor: Colors.deepPurple,
+                backgroundColor: colorScheme.primary,
                 child: Text(
                   contact.name.isNotEmpty ? contact.name[0].toUpperCase() : '',
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: isDarkMode ? Colors.black : Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
@@ -50,7 +60,6 @@ class ContactTile extends StatelessWidget {
               ),
               const SizedBox(width: 12),
 
-              // 🔴 মাঝখানে নাম, ইমেইল এবং ফোন নম্বর
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,10 +67,12 @@ class ContactTile extends StatelessWidget {
                   children: [
                     Text(
                       contact.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: Colors.black87,
+                        color:
+                            theme.textTheme.bodyLarge?.color ??
+                            (isDarkMode ? Colors.white : Colors.black87),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -70,7 +81,9 @@ class ContactTile extends StatelessWidget {
                     Text(
                       contact.email,
                       style: TextStyle(
-                        color: Colors.grey.shade600,
+                        color:
+                            theme.textTheme.bodyMedium?.color ??
+                            Colors.grey.shade600,
                         fontSize: 11,
                       ),
                       softWrap: true,
@@ -79,21 +92,21 @@ class ContactTile extends StatelessWidget {
                     Text(
                       contact.phone,
                       style: TextStyle(
-                        color: Colors.grey.shade600,
+                        color:
+                            theme.textTheme.bodyMedium?.color ??
+                            Colors.grey.shade600,
                         fontSize: 13,
                       ),
                     ),
                   ],
                 ),
               ),
-
-              // 🎯 ডান পাশ থেকে ফেভারিট বাটন সরিয়ে চমৎকার রাইট অ্যারো আইকন বসানো হলো
               Padding(
                 padding: const EdgeInsets.only(right: 6.0, left: 8.0),
                 child: Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.grey.shade400,
-                  size: 14, // রাইট অ্যারো আইকনের স্ট্যান্ডার্ড সাইজ
+                  color: isDarkMode ? Colors.white30 : Colors.grey.shade400,
+                  size: 14,
                 ),
               ),
             ],

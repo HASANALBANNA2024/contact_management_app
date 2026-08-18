@@ -32,14 +32,12 @@ class ContactDetailsScreen extends StatelessWidget {
             backgroundColor: Colors.deepPurple,
             foregroundColor: Colors.white,
             elevation: 0,
-            titleSpacing:
-                0, // 🎯 ব্যাক বাটনের পর থেকেই যেন টেক্সট পুরো জায়গা পায়
+            titleSpacing: 0,
             title: const Text(
               'Contact Details',
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
               maxLines: 1,
-              overflow: TextOverflow
-                  .ellipsis, // কোনো কারণে বড় হলে ডট ডট দেখাবে, চিপে যাবে না
+              overflow: TextOverflow.ellipsis,
             ),
             actions: [
               Theme(
@@ -48,8 +46,9 @@ class ContactDetailsScreen extends StatelessWidget {
                 ).copyWith(actionIconTheme: const ActionIconThemeData()),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    // ❤️ ফেভারিট বাটন
+                    /// favorite icon
                     IconButton(
                       padding: const EdgeInsets.symmetric(horizontal: 4.0),
                       constraints: const BoxConstraints(),
@@ -72,7 +71,7 @@ class ContactDetailsScreen extends StatelessWidget {
                       },
                     ),
 
-                    // 📝 এডিট বাটন
+                    /// Edit button
                     IconButton(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       constraints: const BoxConstraints(),
@@ -92,14 +91,9 @@ class ContactDetailsScreen extends StatelessWidget {
                       },
                     ),
 
-                    // 🗑️ ডিলিট বাটন
+                    /// Delete Button
                     IconButton(
-                      padding: const EdgeInsets.fromLTRB(
-                        8.0,
-                        8.0,
-                        16.0,
-                        8.0,
-                      ), // 🎯 ডান পাশে স্ট্যান্ডার্ড গ্যাপ রাখার জন্য
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 16.0, 8.0),
                       constraints: const BoxConstraints(),
                       icon: const Icon(
                         Icons.delete,
@@ -185,12 +179,12 @@ class ContactDetailsScreen extends StatelessWidget {
                     color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: Colors.grey.withOpacity(0.2),
+                      color: Colors.grey.withValues(alpha: 0.2),
                       width: 1,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.01),
+                        color: Colors.black.withValues(alpha: 0.01),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),

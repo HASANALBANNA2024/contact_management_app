@@ -58,9 +58,7 @@ class _ContactFormScreenState extends State<ContactFormScreen> {
       } else {
         context.read<ContactBloc>().add(AddContactEvent(newContact));
       }
-      Navigator.pop(
-        context,
-      ); // কোনো এক্সট্রা রিলোড ছাড়া শুধু ফর্ম স্ক্রিন বন্ধ হবে
+      Navigator.pop(context);
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../bloc/contact_bloc.dart';
 import '../bloc/contact_event.dart';
 import '../state/contact_state.dart';
@@ -30,13 +31,15 @@ class SettingsScreen extends StatelessWidget {
                   leading: const Icon(Icons.brightness_6_outlined),
                   title: const Text('Change Theme'),
                   subtitle: Text(
-                    state.isDarkTheme ? 'Light / Dark' : 'Light / Dark',
+                    state.isDarkTheme
+                        ? 'Dark Mode Active'
+                        : 'Light Mode Active',
                   ),
                   trailing: Switch(
                     value: state.isDarkTheme,
-                    activeColor: Colors.deepPurple,
-                    onChanged: (val) {
-                      context.read<ContactBloc>().add(ToggleThemeEvent(val));
+                    activeThumbColor: Theme.of(context).colorScheme.primary,
+                    onChanged: (bool value) {
+                      context.read<ContactBloc>().add(ToggleThemeEvent(value));
                     },
                   ),
                 ),
@@ -57,9 +60,7 @@ class SettingsScreen extends StatelessWidget {
   }) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.01),
-      ),
+      decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.01)),
       child: ListTile(
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
         trailing: trailingText != null

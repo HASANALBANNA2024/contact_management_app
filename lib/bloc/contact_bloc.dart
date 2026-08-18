@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../database/db_helper.dart';
 import '../models/contact_model.dart';
@@ -7,7 +8,6 @@ import 'contact_event.dart';
 
 class ContactBloc extends Bloc<ContactEvent, ContactState> {
   List<ContactModel> _allContacts = [];
-
   ContactBloc() : super(ContactState.initial()) {
     on<LoadContactsEvent>(_onLoadContacts);
     on<AddContactEvent>(_onAddContact);
@@ -25,8 +25,16 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
   ) async {
     emit(state.copyWith(isLoading: true));
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final isDark = prefs.getBool('isDarkMode') ?? false;
       _allContacts = await DbHelper.instance.getAllContacts();
-      emit(state.copyWith(contacts: List.from(_allContacts), isLoading: false));
+      emit(
+        state.copyWith(
+          contacts: List.from(_allContacts),
+          isLoading: false,
+          isDarkTheme: isDark,
+        ),
+      );
     } catch (e) {
       emit(state.copyWith(errorMessage: e.toString(), isLoading: false));
     }
@@ -55,7 +63,6 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
       await DbHelper.instance.updateContact(event.contact);
       _allContacts = await DbHelper.instance.getAllContacts();
 
-      // কারেন্ট লিস্টেও আপডেট করে দেওয়া হলো
       final updatedList = state.contacts
           .map((c) => c.id == event.contact.id ? event.contact : c)
           .toList();
@@ -82,7 +89,7 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
     }
   }
 
-  /// 🎯 Favorite Toggle (ইনস্ট্যান্ট স্টেট চেঞ্জ - লিস্ট উধাও হবে না!)
+  /// Favorite Toggle
   Future<void> _onToggleFavorite(
     ToggleFavoriteEvent event,
     Emitter<ContactState> emit,
@@ -92,20 +99,16 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
         isFavorite: !event.contact.isFavorite,
       );
 
-      // ১. ডাটাবেজ ব্যাকগ্রাউন্ডে আপডেট হবে
+      /// database background update
       await DbHelper.instance.updateContact(updatedContact);
 
-      // ২. মাস্টার লিস্ট বা মেমোরি লিস্ট আপডেট
+      /// master list and memory list update
       _allContacts = _allContacts
           .map((c) => c.id == event.contact.id ? updatedContact : c)
           .toList();
-
-      // ৩. কারেন্ট স্ক্রিনে যে লিস্টটা দেখা যাচ্ছে (সার্চ করা থাকলে সার্চসহ) সেটা আপডেট
       final updatedStateList = state.contacts
           .map((c) => c.id == event.contact.id ? updatedContact : c)
           .toList();
-
-      // নতুন স্টেট ইমিট করায় শুধু আইকনটি রি-রেন্ডার হবে
       emit(state.copyWith(contacts: updatedStateList));
     } catch (e) {
       emit(state.copyWith(errorMessage: 'Failed to update favorite'));
@@ -131,7 +134,14 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
   }
 
   /// Theme handler
-  void _onToggleTheme(ToggleThemeEvent event, Emitter<ContactState> emit) {
-    emit(state.copyWith(isDarkTheme: event.isDark));
+  /// Theme handler
+  Future<void> _onToggleTheme(
+    ToggleThemeEvent event,
+    Emitter<ContactState> emit,
+  ) async {
+    final nextThemeMode = !state.isDarkTheme;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDarkMode', nextThemeMode);
+    emit(state.copyWith(isDarkTheme: nextThemeMode));
   }
 }

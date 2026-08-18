@@ -12,6 +12,9 @@ class DeleteDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
@@ -21,7 +24,9 @@ class DeleteDialog extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 24,
-              backgroundColor: Colors.red.shade50,
+              backgroundColor: isDarkMode
+                  ? Colors.red.withValues(alpha: 0.15)
+                  : Colors.red.shade50,
               child: const Icon(Icons.delete, color: Colors.red, size: 28),
             ),
             const SizedBox(height: 16),
@@ -34,7 +39,9 @@ class DeleteDialog extends StatelessWidget {
               'Are you sure you want to delete\n$contactName?',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.grey.shade600,
+                color:
+                    theme.textTheme.bodyMedium?.color ??
+                    (isDarkMode ? Colors.white70 : Colors.grey.shade600),
                 fontSize: 14,
                 height: 1.4,
               ),
@@ -45,16 +52,22 @@ class DeleteDialog extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      side: BorderSide(color: Colors.grey.shade300),
+                      side: BorderSide(
+                        color: isDarkMode
+                            ? Colors.white.withValues(alpha: 0.15)
+                            : Colors.grey.shade300,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
                     onPressed: () => Navigator.pop(context),
-                    child: const Text(
+                    child: Text(
                       'Cancel',
-                      style: TextStyle(color: Colors.black87),
+                      style: TextStyle(
+                        color: isDarkMode ? Colors.white : Colors.black87,
+                      ),
                     ),
                   ),
                 ),

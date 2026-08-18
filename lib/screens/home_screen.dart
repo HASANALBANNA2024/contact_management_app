@@ -22,14 +22,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
-
-  // 🎯 রেড লাইন দূর করার জন্য এখানে লোকাল ভেরিয়েবলটি তৈরি করা হলো
   late ContactViewMode _currentMode;
 
   @override
   void initState() {
     super.initState();
-    // 🎯 স্ক্রিন ওপেন হওয়ার সময় মেইন মোডটা এখানে ইনিশিয়ালাইজ হবে
     _currentMode = widget.viewMode;
   }
 
@@ -41,16 +38,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // 🎯 widget.viewMode এর বদলে এখন লোকাল ভেরিয়েবল দিয়ে 'isFav' চেক হবে
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     final isFav = _currentMode == ContactViewMode.favorites;
 
-    // 🎯 পুরো Scaffold-কে PopScope দিয়ে র‍্যাপ করা হলো যেন ফেভারিট স্ক্রিনে হাত দিয়ে ব্যাক দিলে অ্যাপ ক্লোজ না হয়
     return PopScope(
-      canPop: !isFav, // ফেভারিট মোডে থাকলে সরাসরি অ্যাপ ক্লোজ হতে দেবে না
+      canPop: !isFav,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
-
-        // 🎯 ফেভারিট মোডে হাত দিয়ে ব্যাক জেসচার দিলে খুব সুন্দরভাবে অল কন্ট্যাক্ট মোডে চলে যাবে
         if (isFav) {
           setState(() {
             _currentMode = ContactViewMode.all;
@@ -60,6 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         appBar: _isSearching
             ? AppBar(
+                backgroundColor: isDarkMode
+                    ? colorScheme.surface
+                    : theme.primaryColor,
                 leading: IconButton(
                   icon: const Icon(Icons.arrow_back),
                   onPressed: () {
@@ -120,15 +120,15 @@ class _HomeScreenState extends State<HomeScreen> {
           currentRoute: isFav ? 'favorites' : 'all',
           onModeChanged: (newMode) {
             setState(() {
-              _currentMode = newMode; // 🎯 এখন আর কোনো এরর বা রেড লাইন আসবে না!
+              _currentMode = newMode;
             });
           },
         ),
         body: BlocBuilder<ContactBloc, ContactState>(
           builder: (context, state) {
             if (state.isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(color: Colors.deepPurple),
+              return Center(
+                child: CircularProgressIndicator(color: colorScheme.primary),
               );
             }
 
@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 160,
                         width: 160,
                         decoration: BoxDecoration(
-                          color: Colors.deepPurple.withOpacity(0.05),
+                          color: colorScheme.primary.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Icon(
@@ -155,16 +155,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               ? Icons.star_outline
                               : Icons.contact_page_outlined,
                           size: 80,
-                          color: Colors.deepPurple.shade200,
+                          color: isDarkMode
+                              ? colorScheme.primary.withValues(alpha: 0.6)
+                              : colorScheme.primary.withValues(alpha: 0.4),
                         ),
                       ),
                       const SizedBox(height: 24),
                       Text(
                         isFav ? 'No favorites yet' : 'No contacts yet',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          color:
+                              theme.textTheme.headlineMedium?.color ??
+                              (isDarkMode ? Colors.white : Colors.black87),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -174,7 +178,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             : 'Add your first contact by tapping\nthe + button below.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.grey.shade500,
+                          color:
+                              theme.textTheme.bodyMedium?.color ??
+                              Colors.grey.shade500,
                           fontSize: 14,
                           height: 1.4,
                         ),
@@ -216,7 +222,6 @@ class _HomeScreenState extends State<HomeScreen> {
               MaterialPageRoute(builder: (_) => const ContactFormScreen()),
             );
           },
-          shape: const CircleBorder(),
           child: const Icon(Icons.add, size: 28),
         ),
       ),
