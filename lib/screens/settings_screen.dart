@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/contact_bloc.dart';
 import '../bloc/contact_event.dart';
 import '../state/contact_state.dart';
+import 'about_app_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -44,7 +45,18 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              _item(title: 'About App', hasNavigation: true),
+              _item(
+                title: 'About App',
+                hasNavigation: true,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AboutAppScreen(),
+                    ),
+                  );
+                },
+              ),
               _item(title: 'Version', trailingText: '1.0.0'),
             ],
           );
@@ -57,11 +69,13 @@ class SettingsScreen extends StatelessWidget {
     required String title,
     String? trailingText,
     bool hasNavigation = false,
+    VoidCallback? onTap,
   }) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.01)),
       child: ListTile(
+        onTap: onTap,
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
         trailing: trailingText != null
             ? Text(trailingText, style: TextStyle(color: Colors.grey.shade600))
