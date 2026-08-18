@@ -1,4 +1,4 @@
-# 📱 Contact Manager Pro
+# 📱 Contact Manager
 
 An enterprise-grade, highly optimized Flutter Contact Management architecture structured on strict clean-coding patterns, complete **BLoC (Business Logic Component) State Management**, and a reactive native storage ecosystem. Built with a production-ready telemetry framework, ensuring zero lag, fully optimized lifecycle management, and a fluid 120Hz user experience.
 
@@ -12,32 +12,50 @@ An enterprise-grade, highly optimized Flutter Contact Management architecture st
 
 ---
 
-## 📸 App Walkthrough & Native Experience
+## 📸 Complete App Walkthrough & UI Pipelines
 
-### 🚀 1. Cold Start & Core Navigation Hub
-Features a zero-delay native splash architecture mapped smoothly into the main operational hub using an isolated drawer system.
+### 🚀 1. Bootloader & Cold Start Sequence
+The application handles the startup sequence via a two-tier splash architecture. First, the native OS bootlayer triggers, followed instantly by the custom structural app initialization splash view.
 
-| Native Launch Core | App Drawer Pipeline |
+| Phase 1: Native OS Boot Layer | Phase 2: Application Core Initializer |
 |---|---|
-| ![Native Splash](screenshots/native_splashscreen.png) | ![App Drawer](screenshots/drawer.png) |
+| ![Native Splash](screenshots/native_splashscreen.png) | ![App Splash Screen](screenshots/splash_screen.png) |
 
 ---
 
-### 🗂️ 2. Comprehensive Directory Views & States
-Dynamic context mapping allows state distribution to display structured responsive contact nodes or beautifully descriptive illustrations when datasets are vacant.
+### 🗂️ 2. Master Directory, Navigation & Empty States
+The core shell integrates a Material Drawer interface. It uses lazy-loaded list view structures to handle full contact datasets, swapping seamlessly into lightweight empty vector screens when databases are unpopulated.
 
-| Master Directory View | Active Starred/Favorites | Empty Directory State | Empty Favorites Fallback |
-|---|---|---|---|
-| ![My Contacts](screenshots/my_contact_screen.png) | ![Favorites Screen](screenshots/favorite_screen.png) | ![Empty Directory](screenshots/Empty_my_contact_screen.png) | ![Empty Favorites](screenshots/Empty_favorite_screen.png) |
+| System Navigation Drawer | Master Contact Directory | Empty Contacts Workspace |
+|---|---|---|
+| ![App Drawer](screenshots/drawer.png) | ![My Contacts View](screenshots/my_contact_screen.png) | ![Empty Directory](screenshots/Empty_my_contact_screen.png) |
 
 ---
 
-### 📝 3. Immutable CRUD Data Lifecycle
-Data entries are deeply bound to relational schema validation structures, producing instant cross-screen synchronization upon single atomic updates.
+### ⭐ 3. Favorites Filtering System
+An isolated event stream maps filtered entries into a dedicated favorites view. It includes custom layout fallbacks to handle empty favorited lists seamlessly.
 
-| Initialize Contact Node | Contextual Aggregation Details | Live Entry Mutation | Atomic Removal Dispatch |
+| Starred/Favorites Active Directory | Empty Favorites Workspace |
+|---|---|
+| ![Favorites Screen](screenshots/favorite_screen.png) | ![Empty Favorites](screenshots/Empty_favorite_screen.png) |
+
+---
+
+### 📝 4. Node CRUD Lifecycle & Mutation Security
+Data entries are deeply validated before being dispatched to the SQLite layer. Modifications auto-trigger state changes across screens, backed by a confirmation dialog to prevent accidental deletion.
+
+| Initialize Contact Node | Contextual Aggregation Details | Live Entry Mutation | Atomic Removal Guard |
 |---|---|---|---|
-| ![Add Form](screenshots/add_contact_screen.png) | ![Details View](screenshots/contact_details_screen.png) | ![Edit Screen](screenshots/edit_contact_screen.png) | ![Delete Guard](screenshots/delete_widget.png) |
+| ![Add Screen](screenshots/add_contact_screen.png) | ![Details View](screenshots/contact_details_screen.png) | ![Edit Screen](screenshots/edit_contact_screen.png) | ![Delete Widget](screenshots/delete_widget.png) |
+
+---
+
+### ⚙️ 5. Control Dashboard & System Diagnostics
+The settings workspace manages runtime UI attributes, persisting preference parameters to the disk immediately upon interaction.
+
+| Local Configuration Center | Application Build Specifications |
+|---|---|
+| ![Settings Dashboard](screenshots/settings_screen.png) | ![About App View](screenshots/about_screen.png) |
 
 ---
 
@@ -47,7 +65,7 @@ To guarantee enterprise readiness, the core architecture underwent extensive dia
 ### ⚡ 1. Frame Rate Telemetry & Raster Budgets
 * **Average Frame Rate:** **113 FPS** — Consistently maximizing high-refresh-rate display capabilities across performance target devices.
 * **Rendering Overhead:** Sub-millisecond pipeline latency ($\le 3\text{ms}$ average runtime execution), safely beneath the rigid $8.3\text{ms}$ processing ceiling for 120Hz viewports.
-* **Jank Index:** **0% Frame Drop Anomalies.** Complete absence of thread blocks or skipped macro-tasks during concurrent listing re-builds.
+* **Jank Index:** **0% Frame Drop Anomalies.** Complete absence of thread blocks or skipped micro-tasks during concurrent listing re-builds.
 
 #### 📸 Official Performance Profiler Diagnostics:
 ![Performance Audit](screenshots/performance.png)
