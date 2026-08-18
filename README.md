@@ -26,9 +26,9 @@ The application handles the startup sequence via a two-tier splash architecture.
 ### 🗂️ 2. Master Directory, Navigation & Empty States
 The core shell integrates a Material Drawer interface. It uses lazy-loaded list view structures to handle full contact datasets, swapping seamlessly into lightweight empty vector screens when databases are unpopulated.
 
-| System Navigation Drawer | Master Contact Directory | Empty Contacts Workspace |
-|---|---|---|
-| ![App Drawer](screenshots/drawer.png) | ![My Contacts View](screenshots/my_contact_screen.png) | ![Empty Directory](screenshots/Empty_my_contact_screen.png) |
+| System Navigation Drawer | Master Contact Directory | Empty Contacts Workspace                                    |
+|---|---|-------------------------------------------------------------|
+| ![App Drawer](screenshots/drawer.png) | ![My Contacts View](screenshots/my_contact_screen.png) | ![Empty Directory](screenshots/Empty_My_contact_screen.png) |
 
 ---
 
