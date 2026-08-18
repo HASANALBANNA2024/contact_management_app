@@ -134,7 +134,6 @@ class ContactBloc extends Bloc<ContactEvent, ContactState> {
   }
 
   /// Theme handler
-  /// Theme handler
   Future<void> _onToggleTheme(
     ToggleThemeEvent event,
     Emitter<ContactState> emit,
