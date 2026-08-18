@@ -29,6 +29,7 @@ class ContactDetailsScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
+            centerTitle: false,
             backgroundColor: Colors.deepPurple,
             foregroundColor: Colors.white,
             elevation: 0,
@@ -54,8 +55,8 @@ class ContactDetailsScreen extends StatelessWidget {
                       constraints: const BoxConstraints(),
                       icon: Icon(
                         currentContact.isFavorite
-                            ? Icons.favorite
-                            : Icons.favorite_border,
+                            ? Icons.star_outline
+                            : Icons.star_border,
                         color: currentContact.isFavorite
                             ? Colors.redAccent
                             : Colors.white,
@@ -135,7 +136,7 @@ class ContactDetailsScreen extends StatelessWidget {
           body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(
-              horizontal: 24.0,
+              horizontal: 16.0,
               vertical: 32.0,
             ),
             child: Column(

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../bloc/contact_bloc.dart';
+import '../bloc/contact_event.dart';
 import '../models/contact_model.dart';
 
 class ContactTile extends StatelessWidget {
@@ -102,12 +105,36 @@ class ContactTile extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 6.0, left: 8.0),
-                child: Icon(
-                  Icons.arrow_forward_ios,
-                  color: isDarkMode ? Colors.white30 : Colors.grey.shade400,
-                  size: 14,
-                ),
+                padding: const EdgeInsets.only(right: 2.0, left: 4.0),
+                child: isFavoriteScreen
+                    ? IconButton(
+                        icon: const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                          size: 26,
+                        ),
+                        onPressed: () {
+                          context.read<ContactBloc>().add(
+                            ToggleFavoriteEvent(contact),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                '${contact.name} removed from favorites',
+                              ),
+                              duration: const Duration(seconds: 1),
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        },
+                      )
+                    : Icon(
+                        Icons.arrow_forward_ios,
+                        color: isDarkMode
+                            ? Colors.white30
+                            : Colors.grey.shade400,
+                        size: 14,
+                      ),
               ),
             ],
           ),

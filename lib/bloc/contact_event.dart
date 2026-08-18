@@ -35,8 +35,5 @@ class SearchContactsEvent extends ContactEvent {
   SearchContactsEvent(this.query);
 }
 
-/// Theme change event
-class ToggleThemeEvent extends ContactEvent {
-  final bool isDark;
-  ToggleThemeEvent(this.isDark);
-}
+/// Theme change event (Clean & Parameter-less)
+class ToggleThemeEvent extends ContactEvent {}

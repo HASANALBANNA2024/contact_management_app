@@ -39,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
                     value: state.isDarkTheme,
                     activeThumbColor: Theme.of(context).colorScheme.primary,
                     onChanged: (bool value) {
-                      context.read<ContactBloc>().add(ToggleThemeEvent(value));
+                      context.read<ContactBloc>().add(ToggleThemeEvent());
                     },
                   ),
                 ),
